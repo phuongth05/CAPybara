@@ -37,7 +37,7 @@ if [[ ! -f "$karpathy_annotations" ]]; then
   mkdir -p "$(dirname "$karpathy_annotations")"
   python -c "import urllib.request; urllib.request.urlretrieve('https://storage.googleapis.com/sfr-vision-language-research/datasets/coco_karpathy_test.json', '$karpathy_annotations')"
 fi
-python -c "import hashlib, pathlib; p=pathlib.Path('$karpathy_annotations'); d=hashlib.md5(p.read_bytes()).hexdigest(); expected='3ff34b0ef2db02d01c37399f6a2a6cd1'; raise SystemExit(f'Karpathy MD5 mismatch: {d}') if d != expected else None"
+python -c "import hashlib, pathlib, sys; p=pathlib.Path('$karpathy_annotations'); d=hashlib.md5(p.read_bytes()).hexdigest(); expected='3ff34b0ef2db02d01c37399f6a2a6cd1'; print('Karpathy MD5:', d); sys.exit(0 if d == expected else 'Karpathy MD5 mismatch: '+d)"
 
 mkdir -p "$(dirname "$retrieval_index")" "$(dirname "$retrieval_captions")"
 if [[ ! -f "$retrieval_index" ]]; then
