@@ -272,16 +272,30 @@ def audit_r1_retrievals(
     retrievals = json.loads(retrieval_path.read_text(encoding="utf-8"))
     result["query_count"] = len(retrievals) if isinstance(retrievals, list) else None
     result["query_ids"] = [int(row["coco_id"]) for row in retrievals] if isinstance(retrievals, list) else []
+    if not isinstance(retrievals, list) or result["query_ids"] != R1_IDS:
+        result["status"] = "FAIL"
+        result["reason"] = "retrievals.json does not contain the frozen R1 query order"
+        return result
     if filtered_captions is None:
         result["reason"] = "source image IDs are unavailable without dataset_coco.json"
         return result
     by_caption = {item["caption"]: int(item["image_id"]) for item in filtered_captions}
     details = []
+    unresolved = []
     for row in retrievals:
-        sources = [by_caption.get(item["caption"]) for item in row.get("retrieval", [])]
+        retrieval = row.get("retrieval", [])
+        sources = [by_caption.get(item["caption"]) for item in retrieval]
+        unresolved.extend(
+            {"coco_id": int(row["coco_id"]), "caption": item["caption"]}
+            for item, source_id in zip(retrieval, sources)
+            if source_id is None
+        )
         details.append({"coco_id": int(row["coco_id"]), "source_image_ids": sources})
     result["details"] = details
-    result["status"] = "PASS"
+    result["unresolved_caption_count"] = len(unresolved)
+    result["status"] = "PASS" if not unresolved and all(len(row["source_image_ids"]) == 4 for row in details) else "FAIL"
+    if unresolved:
+        result["unresolved"] = unresolved[:10]
     return result
 
 
