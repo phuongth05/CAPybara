@@ -6,7 +6,7 @@ Reproducible infrastructure for retrieval-augmented image captioning (RAIC).
 
 The first baseline is SmallCap. This repository provides experiment bookkeeping, validation, prediction normalization, and an adapter for the verified official-checkpoint protocol. It does not vendor or modify the official SmallCap implementation.
 
-Status: R0 and the fresh four-image R1 engineering smoke run are PASS; R1.5b verifies the pinned Karpathy candidate and public datastore for reproduction. R2 reproduction is READY, while datastore provenance remains PARTIAL because the literal pinned padded filter does not reproduce the public caption sequence.
+Status: R0 and the four-image R1 engineering smoke run are PASS; R1.5b verifies the pinned Karpathy candidate and public datastore for reproduction. The dedicated R2 runner evaluates all 5,000 Karpathy test images with the pinned COCO caption evaluator. Datastore provenance remains PARTIAL because the literal pinned padded filter does not reproduce the public caption sequence.
 
 ## Local validation
 
@@ -33,3 +33,16 @@ bash kaggle/run_smallcap_smoke.sh \
 ```
 
 The script downloads and checks the Karpathy annotation file and official public retrieval artifacts when they are absent. It selects four deterministic Karpathy-test records using seed 2026, performs `k=4` retrieval with `RN50x64`, then generates with `Yova/SmallCap7M` using `openai/clip-vit-base-patch32` as the generation visual encoder and beam size 3. It records retrievals, captions, environment, and provenance metadata. This is engineering validation only; it does not compute research metrics.
+
+## SmallCap R2 full evaluation
+
+After the R2 preflight, run the dedicated 5,000-image evaluator with COCO images attached as Kaggle input:
+
+```bash
+bash kaggle/run_smallcap_r2.sh \
+  --smallcap-root /kaggle/working/smallcap \
+  --dataset-coco /kaggle/input/datasets/shtvkumar/karpathy-splits/dataset_coco.json \
+  --images-root /kaggle/input
+```
+
+The runner checks all test IDs and image files before loading models, uses the public FAISS datastore, saves retrievals and generation checkpoints under `outputs/smallcap/r2_full/<RUN_ID>/`, and evaluates with the pinned SmallCap `COCOEvalCap`. If generation is interrupted, resume the same directory with `--resume-run /kaggle/working/CAPybara/outputs/smallcap/r2_full/<RUN_ID>`.

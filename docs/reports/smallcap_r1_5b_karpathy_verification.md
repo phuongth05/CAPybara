@@ -136,10 +136,11 @@ Audit output directory: `outputs/smallcap/r1_5b_karpathy_verification/20261001T1
 
 ## 12. Next action
 
-On Kaggle, run this preflight before the separate 5,000-image R2 runner; it validates the exact R2 values and stops before inference:
+R2 reproduction is ready. A dedicated 5,000-image runner and config were added after this audit. From the active Kaggle notebook, run:
 
 ```bash
-cd /kaggle/working/CAPybara
-python scripts/validate_config.py configs/smallcap_smoke.json
-python -c "import json,faiss; c=json.load(open('datastore/coco_index_captions.json')); i=faiss.read_index('datastore/coco_index'); assert len(c)==565497 and i.ntotal==565497 and i.d==1024 and type(i).__name__=='IndexFlatIP'; print('R2 preflight PASS: checkpoint=Yova/SmallCap7M@fd635f4025a5ccb638ed1e1b540c3671557b9a16, source=19cc4f4e5972c70fde16c8857b14c96e5492cb30, test_images=5000, seed=2026, k=4, beams=3')"
+%cd /kaggle/working/CAPybara
+!bash kaggle/run_smallcap_r2.sh --smallcap-root /kaggle/working/smallcap --dataset-coco /kaggle/input/datasets/shtvkumar/karpathy-splits/dataset_coco.json --images-root /kaggle/input
 ```
+
+The R2 runner checkpoints generated captions every 50 images and can resume using `--resume-run /kaggle/working/CAPybara/outputs/smallcap/r2_full/<RUN_ID>`.

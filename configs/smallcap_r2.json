@@ -1,0 +1,42 @@
+{
+  "experiment_id": "smallcap_coco_karpathy_test_r2_full_001",
+  "model": "SmallCap7M",
+  "checkpoint": "Yova/SmallCap7M",
+  "checkpoint_id": "Yova/SmallCap7M",
+  "checkpoint_revision": "fd635f4025a5ccb638ed1e1b540c3671557b9a16",
+  "upstream_commit": "19cc4f4e5972c70fde16c8857b14c96e5492cb30",
+  "dataset": "MS COCO",
+  "split": "Karpathy test",
+  "sample_limit": 5000,
+  "seed": 2026,
+  "device": "cuda",
+  "retrieval_k": 4,
+  "retrieval_encoder": "RN50x64",
+  "generation_visual_encoder": "openai/clip-vit-base-patch32",
+  "generation_visual_encoder_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+  "decoder": "gpt2",
+  "decoder_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+  "num_beams": 3,
+  "generation_parameters": {
+    "max_new_tokens": 25,
+    "no_repeat_ngram_size": 0,
+    "length_penalty": 0.0,
+    "num_beams": 3,
+    "early_stopping": true
+  },
+  "selection_order": "dataset_coco.json order for records where split == test",
+  "retrieval_datastore": {
+    "source_dataset": "COCO Karpathy train+restval public SmallCap distribution",
+    "source_split": "train+restval",
+    "index_type": "IndexFlatIP",
+    "caption_count": 565497,
+    "dimension": 1024,
+    "query_images_excluded_by_source_split": true,
+    "query_captions_excluded_by_source_split": true,
+    "leakage_risk": "none observed for Karpathy test queries"
+  },
+  "evaluation": {
+    "protocol": "pinned SmallCap COCOEvalCap",
+    "metrics": ["Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4", "METEOR", "ROUGE_L", "CIDEr", "SPICE"]
+  }
+}
