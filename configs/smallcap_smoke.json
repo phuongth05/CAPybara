@@ -1,0 +1,40 @@
+{
+  "experiment_id": "smallcap_coco_inference_smoke_001",
+  "model": "SmallCap7M",
+  "checkpoint": "Yova/SmallCap7M",
+  "checkpoint_id": "Yova/SmallCap7M",
+  "checkpoint_revision": "fd635f4025a5ccb638ed1e1b540c3671557b9a16",
+  "upstream_commit": "19cc4f4e5972c70fde16c8857b14c96e5492cb30",
+  "dataset": "MS COCO",
+  "split": "Karpathy test",
+  "seed": 2026,
+  "device": "cuda",
+  "sample_limit": 4,
+  "retrieval_k": 4,
+  "retrieval_encoder": "RN50x64",
+  "caption_encoder": "openai/clip-vit-base-patch32",
+  "caption_encoder_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+  "decoder": "gpt2",
+  "decoder_revision": "607a30d783dfa663caf39e06633721c8d4cfcd7e",
+  "num_beams": 3,
+  "retrieval_datastore": {
+    "source_dataset": "UNVERIFIED from local artifact provenance",
+    "source_split": "UNVERIFIED from local artifact provenance",
+    "retrieval_unit": "caption array indexed by FAISS result ID",
+    "encoder": "RN50x64",
+    "query_images_excluded": "UNVERIFIED",
+    "query_captions_excluded": "UNVERIFIED",
+    "leakage_risk": "UNVERIFIED"
+  },
+  "package_versions": {
+    "python": "3.12.13",
+    "torch": "2.10.0+cu128",
+    "transformers": "4.36.2",
+    "tokenizers": "0.15.2",
+    "huggingface-hub": "0.20.3",
+    "faiss-cpu": "1.12.0",
+    "pycocoevalcap": "1.2",
+    "sentence-transformers": "5.4.1",
+    "openai-CLIP-commit": "a9b1bf5920416aaeaec965c25dd9e8f98c864f16"
+  }
+}
