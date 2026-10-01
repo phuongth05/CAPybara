@@ -315,6 +315,7 @@ def main() -> int:
         if source["commit"] != config["upstream_commit"] or source["dirty"]:
             raise RuntimeError(f"SmallCap source is not a clean pinned checkout: {source}")
         provenance["smallcap_dirty"] = source["dirty"]
+        provenance["smallcap_status_porcelain"] = source["status_porcelain"]
         provenance["smallcap_remote_v"] = source["remote_v"]
         log.write(f"source verified: {source['commit']}")
 
