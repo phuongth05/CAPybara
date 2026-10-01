@@ -15,16 +15,18 @@
 - The archived checkout inside `D:\KIEMCOM\HK3-N3\KLTN\09imagecaptioning\result\results small.zip` contains `.git/config`, the official remote, `HEAD`, packed refs, and clone logs pointing to that commit.
 - Checkpoint: `Yova/SmallCap7M`.
 - Hugging Face cache manifest in the archived result records checkpoint revision `fd635f4025a5ccb638ed1e1b540c3671557b9a16`.
-- Caption encoder: `openai/clip-vit-base-patch32`, cached revision `3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268`.
+- Generation visual encoder: `openai/clip-vit-base-patch32`, cached revision `3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268`.
 - Decoder: `gpt2`, cached revision `607a30d783dfa663caf39e06633721c8d4cfcd7e`.
 - Official retrieval downloads are the FAISS index ID `1ZP5I-xbjaNU7cU48C_ctHd95SaA0jBHe` and caption array ID `1BT0Qc6g40fvtnJ_yY0aipfCuCMgu5qaR`.
 
 These identities agree with the [official repository](https://github.com/RitaRamo/smallcap) and [CVPR 2023 paper](https://openaccess.thecvf.com/content/CVPR2023/html/Ramos_SmallCap_Lightweight_Image_Captioning_Prompted_With_Retrieval_Augmentation_CVPR2023_paper.html).
 
+The official retrieval-construction code defines the intended protocol as follows: COCO `restval` is treated as training data; datastore captions come from train/restval; captions longer than 25 GPT-2 tokens are filtered; captions are encoded with retrieval encoder `RN50x64`; FAISS `IndexFlatIP` is used; and captions belonging to the query image are filtered when official retrieved-caption mappings are constructed. This is OFFICIAL PROTOCOL evidence. It does not prove that the locally/publicly released `coco_index` and `coco_index_captions.json` are byte-for-byte products of that construction.
+
 ### LOCAL-REIMPLEMENTATION
 
 - `notebooks/01_smallcap_kaggle.ipynb` is a local execution harness, not upstream SmallCap code.
-- It performs FAISS retrieval online, uses CLIP `RN50x64`, uses CLIP ViT-B/32 for caption conditioning, sets `k=4`, and calls the pinned upstream model directly.
+- It performs FAISS retrieval online with `RN50x64`, uses `openai/clip-vit-base-patch32` as the generation visual encoder, sets `k=4`, and calls the pinned upstream model directly.
 - It uses a Python 3.12/Kaggle environment and records outputs, manifests, metrics, and telemetry.
 
 ### VERIFIED-COMPATIBLE
@@ -59,9 +61,9 @@ The old notebook clones `https://github.com/RitaRamo/smallcap.git`, checks out `
 
 1. sorts Karpathy records by numeric COCO ID;
 2. shuffles with seed `2026` and selects the configured profile size;
-3. computes online `RN50x64` image embeddings;
+3. computes online `RN50x64` retrieval embeddings;
 4. retrieves `k=4` captions from the FAISS index;
-5. encodes the image with CLIP ViT-B/32;
+5. encodes the image with `openai/clip-vit-base-patch32` as the generation visual encoder;
 6. generates with GPT-2/SmallCap, beam size 3, `max_new_tokens=25`;
 7. preserves predictions, metrics, telemetry, and a manifest.
 
@@ -73,7 +75,7 @@ The old notebook's default is `PROFILE="full"`; its historical smoke report desc
 
 - The retrieval array is precomputed and indexed by FAISS result ID.
 - The notebook uses the same retrieval index for Karpathy-test queries and does not construct a new datastore locally.
-- The old notebook does not prove whether query-image captions or test references occur in the retrieval array.
+- The old notebook does not prove whether query-image captions or test references occur in the released retrieval array.
 - No HDF5 feature cache is used by the recovered R1 path; both retrieval and caption image encodings are computed online.
 
 ### Unresolved
@@ -83,7 +85,7 @@ The old notebook's default is `PROFILE="full"`; its historical smoke report desc
 - Whether the released FAISS index includes validation/test references.
 - Exact mapping between the official datastore construction and the paper's leakage assumptions.
 
-These remain scientific risks; no “no leakage” claim is made.
+These remain scientific risks; no “no leakage” claim is made. The current R1 adapter records `artifact_protocol_status=ARTIFACT_PROTOCOL_UNVERIFIED` and does not block engineering inference on this basis.
 
 ## Dependency findings
 

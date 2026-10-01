@@ -32,4 +32,4 @@ bash kaggle/run_smallcap_smoke.sh \
   --coco-input-root /kaggle/input
 ```
 
-The script downloads and checks the Karpathy annotation file and official public retrieval artifacts when they are absent. It selects four deterministic Karpathy-test records using seed 2026, performs `k=4` retrieval with `RN50x64`, generates with `Yova/SmallCap7M` using CLIP ViT-B/32 and beam size 3, and records raw/normalized captions plus provenance metadata. This is engineering validation only; it does not compute research metrics.
+The script downloads and checks the Karpathy annotation file and official public retrieval artifacts when they are absent. It selects four deterministic Karpathy-test records using seed 2026, performs `k=4` retrieval with `RN50x64`, then generates with `Yova/SmallCap7M` using `openai/clip-vit-base-patch32` as the generation visual encoder and beam size 3. It records retrievals, captions, environment, and provenance metadata. This is engineering validation only; it does not compute research metrics.
