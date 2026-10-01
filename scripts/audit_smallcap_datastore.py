@@ -510,14 +510,18 @@ def main() -> int:
         gate_reasons.append("embedding equivalence is not VERIFIED")
     if retrieval_consistency.get("status") != "PASS":
         gate_reasons.append("R1 retrieval consistency artifact was not supplied")
+    required_before_r2 = [
+        "resolve and document the literal-source versus public-artifact filter discrepancy",
+    ]
+    if retrieval_consistency.get("status") != "PASS":
+        required_before_r2.append("preserve the R1 Kaggle retrievals.json and complete per-query retrieval consistency")
+    else:
+        required_before_r2.append("retain the verified R1 retrieval consistency artifact")
+    required_before_r2.append("retain the verified dataset, caption, FAISS, leakage, and embedding artifacts")
     gate = {
         "status": "R2_READY" if not gate_reasons else "R2_BLOCKED",
         "reasons": gate_reasons,
-        "required_before_r2": [
-            "resolve and document the literal-source versus public-artifact filter discrepancy",
-            "preserve the R1 Kaggle retrievals.json and complete per-query retrieval consistency",
-            "retain the verified dataset, caption, FAISS, leakage, and embedding artifacts",
-        ],
+        "required_before_r2": required_before_r2,
     }
 
     write_json(run_dir / "dataset_split_stats.json", split_stats)

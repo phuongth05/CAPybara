@@ -1,6 +1,6 @@
 # Báo cáo audit datastore SmallCap R1.5
 
-Audit đầy đủ: `outputs/smallcap/r1_5_datastore_audit/20261001T073000Z_final/`
+Audit đầy đủ: `outputs/smallcap/r1_5_datastore_audit/20261001T081500Z_final/`
 Kết luận: **R2_BLOCKED**. Không chạy R2 hoặc full inference.
 
 ## 1. Phạm vi và quyết định
@@ -68,13 +68,12 @@ Embedding equivalence: **VERIFIED**.
 
 ## 11. R1 retrieval consistency
 
-Kết quả R1 và các ID đã được user xác nhận, nhưng `retrievals.json` của Kaggle run chưa được tải về workspace. Do đó mapping từng top-4 caption của R1 tới source image ID chưa được kiểm tra trực tiếp; trạng thái consistency là **UNVERIFIED**, dù split-level leakage audit đã PASS.
+ZIP R1 đã cung cấp `retrievals.json`. Audit xác nhận đúng 4 query IDs theo thứ tự cố định, đủ 4 rank mỗi query, 16/16 captions map được về source image IDs, và unresolved caption count bằng `0`. Trạng thái retrieval consistency: **VERIFIED**.
 
 ## 12. R2 gate và hành động tiếp theo
 
 **R2_BLOCKED** vì:
 
-1. literal source filter (`padding=True`, `len(encoding)`) không tái tạo public artifact; public artifact khớp unpadded/attention-mask semantics;
-2. thiếu `retrievals.json` từ R1 Kaggle để hoàn tất consistency audit.
+1. literal source filter (`padding=True`, `len(encoding)`) không tái tạo public artifact; public artifact khớp unpadded/attention-mask semantics.
 
-Artifact machine-readable nằm tại [r2_gate.json](../../outputs/smallcap/r1_5_datastore_audit/20261001T073000Z_final/r2_gate.json), [datastore_provenance.json](../../outputs/smallcap/r1_5_datastore_audit/20261001T073000Z_final/datastore_provenance.json), và [embedding_equivalence.json](../../outputs/smallcap/r1_5_datastore_audit/20261001T073000Z_final/embedding_equivalence.json). Chỉ cần tải thêm `retrievals.json` của R1 và quyết định/ghi nhận rõ filter semantics trước khi chuyển sang R2.
+Artifact machine-readable nằm tại [r2_gate.json](../../outputs/smallcap/r1_5_datastore_audit/20261001T081500Z_final/r2_gate.json), [datastore_provenance.json](../../outputs/smallcap/r1_5_datastore_audit/20261001T081500Z_final/datastore_provenance.json), và [embedding_equivalence.json](../../outputs/smallcap/r1_5_datastore_audit/20261001T081500Z_final/embedding_equivalence.json). Cần quyết định/ghi nhận rõ filter semantics trước khi chuyển sang R2.
