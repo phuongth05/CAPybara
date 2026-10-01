@@ -18,6 +18,8 @@ class R1ProtocolTests(unittest.TestCase):
         self.assertEqual(config["seed"], 2026)
         self.assertEqual(config["retrieval_k"], 4)
         self.assertEqual(config["generation_visual_encoder"], "openai/clip-vit-base-patch32")
+        selected = json.loads((REPO_ROOT / "configs" / "smallcap_r1_selected_ids.json").read_text(encoding="utf-8"))
+        self.assertEqual(selected["selected_coco_ids"], [478077, 379529, 87912, 357265])
 
     def test_selection_is_deterministic_after_id_sort_and_seeded_shuffle(self):
         with tempfile.TemporaryDirectory() as temp:

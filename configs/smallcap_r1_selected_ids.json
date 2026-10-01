@@ -1,0 +1,6 @@
+{
+  "annotation_md5": "3ff34b0ef2db02d01c37399f6a2a6cd1",
+  "annotation_sha256": "5b202a235ee2a4e13f82b984ef9293b8e2d34f9b1f92147bf8340580f20faf15",
+  "selection": "sort numeric COCO ID, then random.Random(2026).shuffle, take first 4",
+  "selected_coco_ids": [478077, 379529, 87912, 357265]
+}

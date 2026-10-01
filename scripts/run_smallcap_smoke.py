@@ -338,8 +338,13 @@ def main() -> int:
 
         log.write("preflight: deterministic sample and images")
         selected = resolve_and_validate_images(load_rows(args.karpathy_annotations, 4, 2026), args.coco_input_root)
+        reference_path = REPO_ROOT / "configs" / "smallcap_r1_selected_ids.json"
+        reference = json.loads(reference_path.read_text(encoding="utf-8"))
+        selected_ids = [row["image_id"] for row in selected]
+        if selected_ids != reference["selected_coco_ids"]:
+            raise RuntimeError(f"deterministic R1 IDs changed: expected {reference['selected_coco_ids']}, got {selected_ids}")
         write_json(run_dir / "selected_ids.json", [{"coco_id": row["image_id"], "image_path": row["image_path"], "file_exists": row["file_exists"], "opened": row["opened"], "rgb_conversion": row["rgb_conversion"], "size": row["size"], "mode": row["mode"]} for row in selected])
-        provenance["selected_coco_ids"] = [row["image_id"] for row in selected]
+        provenance["selected_coco_ids"] = selected_ids
         log.write(f"selected IDs: {provenance['selected_coco_ids']}")
 
         log.write("retrieval sanity check")
