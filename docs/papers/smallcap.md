@@ -3,8 +3,9 @@
 ## Executive status
 
 - R0: PASS for a provenance-tracked official-checkpoint baseline.
-- R1: READY-FOR-KAGGLE. The old folder records a historical 100-image smoke run, but its raw `results (20).zip` is not present in the old folder, so this repository does not claim a fresh artifact-complete R1 yet.
-- R2/R3: out of scope for this milestone.
+- R1: PASS for the fresh four-image Kaggle engineering smoke run recorded on 2026-10-01. The run selected IDs `[478077, 379529, 87912, 357265]`, generated four non-empty captions, and preserved provenance artifacts.
+- R1.5: BLOCKED for exact datastore provenance/leakage clearance. The audit is documented in [smallcap_r1_5_datastore_audit.md](../reports/smallcap_r1_5_datastore_audit.md).
+- R2/R3: blocked/out of scope until R1.5 is resolved.
 
 ## Provenance classification
 
@@ -39,6 +40,7 @@ The official retrieval-construction code defines the intended protocol as follow
 - The old top-level directory is not a Git repository, so its working-tree dirty/clean state cannot be recovered.
 - The retrieval index/caption array source split and query-caption exclusion policy are not proven by the available artifacts.
 - The raw 100-image smoke archive referenced as `results (20).zip` is absent from the old folder.
+- The exact `dataset_coco.json` used to construct the public datastore is not present in the current workspace or archived result package.
 
 ## Artifact inventory from old evidence
 

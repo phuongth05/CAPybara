@@ -6,7 +6,7 @@ Reproducible infrastructure for retrieval-augmented image captioning (RAIC).
 
 The first baseline is SmallCap. This repository provides experiment bookkeeping, validation, prediction normalization, and an adapter for the verified official-checkpoint protocol. It does not vendor or modify the official SmallCap implementation.
 
-Status: R0 is established from the archived official checkout evidence; R1 is ready for a fresh Kaggle smoke run.
+Status: R0 and the fresh four-image R1 engineering smoke run are PASS; R1.5 datastore provenance/leakage audit is currently BLOCKED pending the exact `dataset_coco.json` used to build the public datastore.
 
 ## Local validation
 
