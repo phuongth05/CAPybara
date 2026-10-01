@@ -13,4 +13,4 @@ This repository supports reproducible retrieval-augmented image-captioning resea
 - Do not commit datasets, checkpoints, features, or other large artifacts.
 - Mark unavailable facts `UNVERIFIED` rather than guessing.
 
-The current milestone is SmallCap R1 inference readiness. Do not begin training, full evaluation, robustness experiments, or other baselines without an explicit task.
+The current milestone is SmallCap R1.5 datastore provenance and leakage clearance. Do not begin R2, training, full evaluation, robustness experiments, or other baselines until the R1.5 gate is explicitly resolved.
